@@ -13,15 +13,9 @@ function App() {
         title="Pikachu"
         descr="The most well-known pokemon"
         urlBg={Pikachu}
-        colorBg=""
       />
-      <Layout title="Red" descr="Just a red layout" urlBg="" colorBg="red" />
-      <Layout
-        title="The Ash's Team"
-        descr="Ash and his friends"
-        urlBg={Team}
-        colorBg=""
-      />
+      <Layout title="Red" descr="Just a red layout" colorBg="red" />
+      <Layout title="The Ash's Team" descr="Ash and his friends" urlBg={Team} />
       <Footer></Footer>
     </div>
   );

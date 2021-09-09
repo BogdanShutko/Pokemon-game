@@ -1,10 +1,10 @@
 import style from "./style.module.css";
 
 const Layout = (props) => {
-  const backgroundImage = `url(${props.urlBg})`;
+  const backgroundImage = props.urlBg ? `url(${props.urlBg})` : null;
   const styles = {
     backgroundColor: props.colorBg || null,
-    backgroundImage: backgroundImage || null,
+    backgroundImage,
   };
   return (
     <section className={style.root} style={styles}>
