@@ -1,13 +1,22 @@
-import logo from "./logo.svg";
 import "./App.css";
+import Footer from "./components/Footer/Footer";
+import Header from "./components/Header/Header";
+import Layout from "./components/Layout/Layout";
+import Pikachu from "../src/assets/bg1.jpg";
+import Team from "../src/assets/bg2.jpg";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello World, React.js!</p>
-      </header>
+      <Header title={"Forest"} descr={"A beautiful night forest"}></Header>
+      <Layout
+        title="Pikachu"
+        descr="The most well-known pokemon"
+        urlBg={Pikachu}
+      />
+      <Layout title="Red" descr="Just a red layout" colorBg="red" />
+      <Layout title="The Ash's Team" descr="Ash and his friends" urlBg={Team} />
+      <Footer></Footer>
     </div>
   );
 }
