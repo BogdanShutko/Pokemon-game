@@ -7,7 +7,11 @@ const PokemonCard = ({ values, img, id, name, type }) => {
   const handlerClick = () => setActive(!isActive);
   return (
     <div className={style.root} onClick={handlerClick}>
-      <div className={`${style.pokemonCard} ${isActive ? style.active : ""}`}>
+      <div
+        className={`${style.pokemonCard} ${style.type} ${
+          isActive ? style.active : ""
+        }`}
+      >
         <div className={style.cardFront}>
           <div className={`${style.wrap} ${style.front}`}>
             <div className={`${style.pokemon} ${style.type}`}>
