@@ -1,4 +1,5 @@
 import style from "./style.module.css";
+import cn from "classnames";
 
 const Layout = (props) => {
   const backgroundImage = props.urlBg ? `url(${props.urlBg})` : null;
@@ -14,7 +15,7 @@ const Layout = (props) => {
             <h3>{props.title}</h3>
             <span className={style.separator}></span>
           </div>
-          <div className={`${style.desc} ${style.full}`}>
+          <div className={cn(style.desc, style.full)}>
             <p>{props.children}</p>
           </div>
         </article>
