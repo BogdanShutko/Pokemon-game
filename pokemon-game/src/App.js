@@ -1,6 +1,6 @@
 import HomePage from "./routes/Home";
 import GamePage from "./routes/Game";
-import { useRouteMatch, Route, Switch } from "react-router-dom";
+import { useRouteMatch, Route, Switch, Redirect } from "react-router-dom";
 import About from "./routes/about/about";
 import Contact from "./routes/Contact/contact";
 import MenuHeader from "./routes/MenuHeader/MenuHeader";
@@ -13,6 +13,7 @@ const App = () => {
   const match = useRouteMatch("/");
   return (
     <Switch>
+      <Route path="/404" component={NotFound} />
       <Route>
         <>
           <MenuHeader bgActive={!match.isExact} />
@@ -27,12 +28,16 @@ const App = () => {
               <Route path="/game" component={GamePage}></Route>
               <Route path="/about" component={About}></Route>
               <Route path="/contact" component={Contact}></Route>
+              <Route
+                render={() => {
+                  return <Redirect to="/404" />;
+                }}
+              />
             </Switch>
           </div>
           <Footer />
         </>
       </Route>
-      <Route component={NotFound} />
     </Switch>
   );
 };
