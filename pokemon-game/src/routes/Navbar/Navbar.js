@@ -1,17 +1,17 @@
 import s from "./style.module.css";
 import cn from "classnames";
 
-const Navbar = ({ checkActive, changeActive }) => {
+const Navbar = ({ checkActive, bgActive, changeActive }) => {
   return (
-    <nav className={s.root}>
+    <nav className={cn(s.root, { [s.bgActive]: bgActive })}>
       <div className={s.navWrapper}>
         <p className={s.brand}>LOGO</p>
-        <a
+        <div
           className={cn(s.menuButton, { [s.active]: checkActive })}
           onClick={changeActive}
         >
           <span />
-        </a>
+        </div>
       </div>
     </nav>
   );
