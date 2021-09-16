@@ -3,9 +3,18 @@ import BackSide from "../../assets/card-back-side.jpg";
 import { useState } from "react";
 import cn from "classnames";
 
-const PokemonCard = ({ values, img, id, name, type }) => {
-  const [isActive, setActive] = useState(false);
-  const handlerClick = () => setActive(!isActive);
+const PokemonCard = ({
+  values,
+  img,
+  id,
+  name,
+  type,
+  isActive = false,
+  flipCard,
+}) => {
+  const handlerClick = () => {
+    flipCard && flipCard(id);
+  };
   return (
     <div className={style.root} onClick={handlerClick}>
       <div

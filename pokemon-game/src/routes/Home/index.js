@@ -8,20 +8,11 @@ import PokemonsJSON from "../../data/Pokemons.json";
 import MenuHeader from "../MenuHeader/MenuHeader";
 import s from "./style.module.css";
 
-function HomePage({ onChangePage }) {
-  const handlerClickButton = (page) => {
-    console.log("#####: <HomePage />");
-    onChangePage && onChangePage(page);
-  };
+function HomePage() {
   const POKEMONS = PokemonsJSON;
   return (
     <div className="App">
-      <MenuHeader />
-      <Header
-        title={"Forest"}
-        descr={"A beautiful night forest"}
-        onClickButton={handlerClickButton}
-      ></Header>
+      <Header title={"Forest"} descr={"A beautiful night forest"}></Header>
       <Layout
         title="Pikachu"
         descr="The most well-known pokemon"
@@ -45,20 +36,7 @@ function HomePage({ onChangePage }) {
           the player's color instead.{" "}
         </p>
       </Layout>
-      <Layout title="Red" colorBg="red">
-        <div className={s.flex}>
-          {POKEMONS.map((pokemon) => (
-            <PokemonCard
-              key={pokemon.id}
-              values={pokemon.values}
-              name={pokemon.name}
-              img={pokemon.img}
-              id={pokemon.id}
-              type={pokemon.type}
-            />
-          ))}
-        </div>
-      </Layout>
+      <Layout title="Red" colorBg="red"></Layout>
       <Layout title="The Ash's Team" descr="Ash and his friends" urlBg={Team}>
         <p>
           In the game two players face off against one another, one side playing
