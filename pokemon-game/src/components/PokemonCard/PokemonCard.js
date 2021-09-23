@@ -11,9 +11,10 @@ const PokemonCard = ({
   type,
   isActive = false,
   flipCard,
+  objId,
 }) => {
   const handlerClick = () => {
-    flipCard && flipCard(id);
+    flipCard && flipCard(id, objId);
   };
   return (
     <div className={style.root} onClick={handlerClick}>
