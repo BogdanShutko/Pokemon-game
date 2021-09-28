@@ -8,11 +8,16 @@ import Footer from "./components/Footer/Footer";
 import NotFound from "./routes/NotFound/NotFound";
 import s from "./style.module.css";
 import cn from "classnames";
+import { FireBaseContext } from "./components/context/firebaseContext";
+import Firebase from "./service/firebase";
+import { useLocation } from "react-router";
 
 const App = () => {
-  const match = useRouteMatch("/");
+  const location = useLocation();
+  const isPadding =
+    location.pathname === "/" || location.pathname === "/game/board";
   return (
-    <FirebaseContext.Provider value={new Firebase()}>
+    <FireBaseContext.Provider value={new Firebase()}>
       <Switch>
         <Route path="/404" component={NotFound} />
         <Route>
@@ -39,7 +44,7 @@ const App = () => {
           </>
         </Route>
       </Switch>
-    </FirebaseContext.Provider>
+    </FireBaseContext.Provider>
   );
 };
 

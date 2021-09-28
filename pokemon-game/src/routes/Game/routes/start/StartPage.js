@@ -1,28 +1,24 @@
-import { useHistory } from "react-router";
+import s from "./style.module.css";
 import PokemonCard from "../../../../components/PokemonCard/PokemonCard";
 import { useState, useEffect, useContext } from "react";
-import s from "./style.module.css";
-import database from "../../../../service/firebase";
-import cn from "classnames";
-import { FirebaseContext } from "../../../../components/context/firebaseContext";
+import { FireBaseContext } from "../../../../components/context/firebaseContext";
 import { PokemonContext } from "../../../../components/context/pokemonContext";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { getPokemons, selectPokemonsData } from "../../../../store/pokemons";
+import { useHistory } from "react-router";
+import cn from "classnames";
 
 const StartPage = () => {
-  const firebase = useContext(FirebaseContext);
+  const firebase = useContext(FireBaseContext);
   const pokemonsContext = useContext(PokemonContext);
   const [pokemons, setPokemons] = useState({});
-  const dispatch = useDispatch();
-  const pokemonRedux = useSelector(selectPokemonsData);
+  // const dispatch = useDispatch();
+  // const pokemonRedux = useSelector(selectPokemonsData);
 
   useEffect(() => {
-    firebase.getPokemons((pokemons) => setPokemons(pokemons));
+    firebase.getPokemonSocket((pokemons) => setPokemons(pokemons));
     console.log(pokemons);
-    dispatch(getPokemons(pokemons));
+    // dispatch(getPokemons(pokemons));
     return () => {
-      firebase.offPockemonSocket();
+      firebase.getOffPokemonSocket();
     };
   }, []);
 

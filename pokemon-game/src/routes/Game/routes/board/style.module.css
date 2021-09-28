@@ -23,14 +23,17 @@
   padding: 6px;
   cursor: pointer;
 }
+
 .boardPlate:hover {
   background: rgba(255, 255, 255, 0.1);
 }
+
 .boardPlate.disabled:hover {
   background: none;
 }
 
 .card {
+  max-width: 18vw;
   max-height: 14.8vw;
   margin-top: -6vw;
 }
@@ -38,6 +41,7 @@
 .card:first-child {
   margin-top: 0;
 }
+
 .playerOne {
   position: absolute;
   top: 4.3vw;
@@ -45,6 +49,7 @@
   width: 18vw;
   height: 50.3vw;
 }
+
 .playerTwo {
   position: absolute;
   top: 4.3vw;

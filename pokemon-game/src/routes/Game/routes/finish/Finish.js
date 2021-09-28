@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { PokemonContext } from "../../../../components/context/pokemonContext";
-import { FirebaseContext } from "./../../../../components/context/firebaseContext";
+import { FireBaseContext } from "./../../../../components/context/firebaseContext";
 import s from "./style.module.css";
 import PokemonCard from "../../../../components/PokemonCard/PokemonCard";
 import { useHistory } from "react-router-dom";
@@ -37,7 +37,7 @@ const FinishPage = () => {
 
   const { pokemons, clearContext, pokemons2, winner } =
     useContext(PokemonContext);
-  const database = useContext(FirebaseContext);
+  const database = useContext(FireBaseContext);
   const [selectedCard, setSelectedCard] = useState(null);
   const [player2, setPlayer2] = useState(pokemons2);
 
