@@ -1,5 +1,8 @@
 {
   "dependencies": {
-    "firebase": "^9.0.2"
+    "@reduxjs/toolkit": "^1.6.1",
+    "firebase": "^9.0.2",
+    "react-redux": "^7.2.5",
+    "redux": "^4.1.1"
   }
 }

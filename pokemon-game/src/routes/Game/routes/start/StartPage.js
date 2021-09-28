@@ -6,15 +6,21 @@ import database from "../../../../service/firebase";
 import cn from "classnames";
 import { FirebaseContext } from "../../../../components/context/firebaseContext";
 import { PokemonContext } from "../../../../components/context/pokemonContext";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { getPokemons, selectPokemonsData } from "../../../../store/pokemons";
 
 const StartPage = () => {
   const firebase = useContext(FirebaseContext);
   const pokemonsContext = useContext(PokemonContext);
   const [pokemons, setPokemons] = useState({});
+  const dispatch = useDispatch();
+  const pokemonRedux = useSelector(selectPokemonsData);
 
   useEffect(() => {
     firebase.getPokemons((pokemons) => setPokemons(pokemons));
     console.log(pokemons);
+    dispatch(getPokemons(pokemons));
     return () => {
       firebase.offPockemonSocket();
     };
