@@ -1,34 +1,41 @@
 import s from "./style.module.css";
 import PokemonCard from "../../../../components/PokemonCard/PokemonCard";
 import { useState, useEffect, useContext } from "react";
-import { FireBaseContext } from "../../../../components/context/firebaseContext";
-import { PokemonContext } from "../../../../components/context/pokemonContext";
 import { useHistory } from "react-router";
 import cn from "classnames";
+import { useDispatch } from "react-redux";
+import {
+  addFirstPlayerPokemons,
+  addPokemonsAsync,
+  firstPlayerPokemons,
+  getPokemonsAsync,
+  selectPokemonsData,
+  selectPokemonsLoading,
+} from "../../../../store/pokemons";
+import { useSelector } from "react-redux";
 
 const StartPage = () => {
-  const firebase = useContext(FireBaseContext);
-  const pokemonsContext = useContext(PokemonContext);
+  const firstPlayer = useSelector(firstPlayerPokemons);
   const [pokemons, setPokemons] = useState({});
-  // const dispatch = useDispatch();
-  // const pokemonRedux = useSelector(selectPokemonsData);
-
+  const dispatch = useDispatch();
+  const pokemonRedux = useSelector(selectPokemonsData);
+  console.log("#####: REDUX_POKEMONS:", pokemonRedux);
   useEffect(() => {
-    firebase.getPokemonSocket((pokemons) => setPokemons(pokemons));
-    console.log(pokemons);
-    // dispatch(getPokemons(pokemons));
-    return () => {
-      firebase.getOffPokemonSocket();
-    };
+    dispatch(getPokemonsAsync(pokemons));
   }, []);
+  useEffect(() => {
+    setPokemons(pokemonRedux);
+  }, [pokemonRedux]);
 
   const history = useHistory();
   const handlerClick = () => {
     history.push("/");
   };
+
+  const [stateOfChosenPokemons, setStateOfChosenPokemons] = useState({});
   const handlerSelect = (key) => {
     const pokemon = { ...pokemons[key] };
-    pokemonsContext.onSelectedPokemons(key, pokemon);
+    // pokemonsContext.onSelectedPokemons(key, pokemon);
     setPokemons((prevState) => ({
       ...prevState,
       [key]: {
@@ -36,7 +43,38 @@ const StartPage = () => {
         selected: !prevState[key].selected,
       },
     }));
+    setStateOfChosenPokemons((prevState) => {
+      if (prevState[key]) {
+        const copyState = { ...prevState };
+        delete copyState[key];
+        return copyState;
+      }
+      return {
+        ...prevState,
+        [key]: pokemon,
+      };
+    });
   };
+
+  useEffect(() => {
+    console.log(Object.keys(stateOfChosenPokemons).length);
+    dispatch(addPokemonsAsync(stateOfChosenPokemons));
+    console.log(firstPlayer);
+  }, [stateOfChosenPokemons]);
+
+  // const handlerSelectedPokemons = (key, pokemon) => {
+  //   setSelectedPokemons((prevState) => {
+  //     if (prevState[key]) {
+  //       const copyState = { ...prevState };
+  //       delete copyState[key];
+  //       return copyState;
+  //     }
+  //     return {
+  //       ...prevState,
+  //       [key]: pokemon,
+  //     };
+  //   });
+  // };
 
   const handlerGoBoard = () => {
     history.push("/game/board");
@@ -48,7 +86,7 @@ const StartPage = () => {
         <button
           className={cn(s.button)}
           onClick={handlerGoBoard}
-          disabled={Object.keys(pokemonsContext.pokemons).length < 5}
+          disabled={Object.keys(stateOfChosenPokemons).length < 5}
         >
           Start Game
         </button>
@@ -68,7 +106,7 @@ const StartPage = () => {
             isSelected={pokemon.selected}
             handlerSelect={() => {
               if (
-                Object.keys(pokemonsContext.pokemons).length < 5 ||
+                Object.keys(stateOfChosenPokemons).length < 5 ||
                 pokemon.selected
               ) {
                 handlerSelect(key);

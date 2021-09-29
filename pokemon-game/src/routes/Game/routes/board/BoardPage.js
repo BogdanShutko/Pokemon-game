@@ -1,22 +1,30 @@
 import { useContext, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { PokemonContext } from "../../../../components/context/pokemonContext";
 import PokemonCard from "../../../../components/PokemonCard/PokemonCard";
+import {
+  addSecondPokemonsAsync,
+  changeWinner,
+  firstPlayerPokemons,
+  secondPlayerPokemons,
+  winner,
+} from "../../../../store/pokemons";
 import PlayerBoard from "./component/PlayerBoard";
 import s from "./style.module.css";
 
 const BoardPage = () => {
-  const { pokemons, pokemons2, changePokemons2, changeWinner } =
-    useContext(PokemonContext);
-
+  const firstPlayer = useSelector(firstPlayerPokemons);
+  const secondPlayer = useSelector(secondPlayerPokemons);
   const history = useHistory();
-  if (Object.keys(pokemons).length === 0) {
+
+  if (Object.keys(firstPlayer).length !== 5) {
     history.replace("/game");
   }
 
   const [board, setBoard] = useState([]);
   const [player1, setPlayer1] = useState(() => {
-    return Object.values(pokemons).map((item) => ({
+    return Object.values(firstPlayer).map((item) => ({
       ...item,
       possession: "blue",
     }));
@@ -24,6 +32,7 @@ const BoardPage = () => {
   const [player2, setPlayer2] = useState([]);
   const [choiceCard, setChoiceCard] = useState(null);
   const [steps, setSteps] = useState(0);
+  const dispatch = useDispatch();
 
   useEffect(async () => {
     const boardResponse = await fetch(
@@ -36,6 +45,7 @@ const BoardPage = () => {
     );
 
     const playerTwoRequest = await playerTwoResponse.json();
+    dispatch(addSecondPokemonsAsync(playerTwoRequest.data));
 
     setPlayer2(() => {
       return playerTwoRequest.data.map((item) => ({
@@ -44,13 +54,11 @@ const BoardPage = () => {
       }));
     });
 
-    await changePokemons2(playerTwoRequest);
+    // await changePokemons2(playerTwoRequest);
     setBoard(boardRequest.data);
-    console.log(pokemons2);
   }, []);
 
   const handlerClickBoardPlate = async (position) => {
-    console.log(pokemons2);
     if (choiceCard) {
       const params = {
         position,
@@ -100,20 +108,22 @@ const BoardPage = () => {
     });
     return [player1Count, player2Count];
   };
-
+  const winnerPlayer = useSelector(winner);
   useEffect(() => {
     if (steps === 9) {
       const [count1, count2] = counterWin(board, player1, player2);
       if (count1 > count2) {
-        changeWinner(1);
+        dispatch(changeWinner(1));
+        console.log(winnerPlayer);
         alert("WIN");
         history.replace("/game/finish");
       } else if (count2 > count1) {
-        changeWinner(2);
+        dispatch(changeWinner(2));
+        console.log(winnerPlayer);
         alert("LOSE");
         history.replace("/game/finish");
       } else {
-        changeWinner(0);
+        console.log(winnerPlayer);
         alert("DRAW");
         history.replace("/game/finish");
       }

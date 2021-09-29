@@ -17,7 +17,7 @@ const App = () => {
   const isPadding =
     location.pathname === "/" || location.pathname === "/game/board";
   return (
-    <FireBaseContext.Provider value={new Firebase()}>
+    <FireBaseContext.Provider value={Firebase}>
       <Switch>
         <Route path="/404" component={NotFound} />
         <Route>
