@@ -11,6 +11,9 @@ import cn from "classnames";
 import { FireBaseContext } from "./components/context/firebaseContext";
 import Firebase from "./service/firebase";
 import { useLocation } from "react-router";
+import { NotificationContainer } from "react-notifications";
+import "react-notifications/lib/notifications.css";
+import PrivateRoute from "./components/PrivateComponent";
 
 const App = () => {
   const location = useLocation();
@@ -30,10 +33,13 @@ const App = () => {
             >
               <Switch>
                 <Route path="/" exact component={HomePage}></Route>
-                <Route path="/home" component={HomePage} />
-                <Route path="/game" component={GamePage}></Route>
-                <Route path="/about" component={About}></Route>
-                <Route path="/contact" component={Contact}></Route>
+                <PrivateRoute path="/home" component={HomePage} />
+                <PrivateRoute path="/game" component={GamePage} />
+                <PrivateRoute path="/about" component={About}></PrivateRoute>
+                <PrivateRoute
+                  path="/contact"
+                  component={Contact}
+                ></PrivateRoute>
                 <Route
                   render={() => {
                     return <Redirect to="/404" />;
@@ -44,6 +50,7 @@ const App = () => {
           </>
         </Route>
       </Switch>
+      <NotificationContainer />
     </FireBaseContext.Provider>
   );
 };
