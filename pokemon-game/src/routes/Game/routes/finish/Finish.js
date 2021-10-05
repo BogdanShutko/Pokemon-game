@@ -15,8 +15,11 @@ import {
   winner,
 } from "../../../../store/pokemons";
 import { useDispatch } from "react-redux";
+import { selectUserLocalID } from "../../../../store/users";
+import FirebaseClass from "../../../../service/firebase";
 
 const FinishPage = () => {
+  const localID = useSelector(selectUserLocalID);
   const firstPlayer = useSelector(firstPlayerPokemons);
   const secondPlayer = useSelector(secondPlayerPokemons);
   const secondPlayer2 = [...secondPlayer];
@@ -57,7 +60,7 @@ const FinishPage = () => {
           onClick={() => {
             if (selectedCard !== null) {
               delete selectedCard.isSelected;
-              dispatch(addPokemonToDb(selectedCard));
+              FirebaseClass.addPokemon(selectedCard, localID);
             }
             dispatch(clearState());
             history.push("/game");
