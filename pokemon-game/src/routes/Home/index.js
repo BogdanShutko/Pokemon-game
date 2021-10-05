@@ -3,13 +3,8 @@ import Header from "../../components/Header/Header";
 import Layout from "../../components/Layout/Layout";
 import Pikachu from "../../assets/bg1.jpg";
 import Team from "../../assets/bg2.jpg";
-import PokemonCard from "../../components/PokemonCard/PokemonCard";
-import PokemonsJSON from "../../data/Pokemons.json";
-import MenuHeader from "../MenuHeader/MenuHeader";
-import s from "./style.module.css";
 
 function HomePage() {
-  const POKEMONS = PokemonsJSON;
   return (
     <div className="App">
       <Header title={"Forest"} descr={"A beautiful night forest"}></Header>
@@ -56,7 +51,7 @@ function HomePage() {
           the player's color instead.{" "}
         </p>
       </Layout>
-      <Footer></Footer>
+      <Footer />
     </div>
   );
 }
