@@ -4,8 +4,11 @@ import Modal from "../../components/Modal/Modal";
 import Menu from "../Menu/Menu";
 import Navbar from "../Navbar/Navbar";
 import { NotificationManager } from "react-notifications";
+import { useDispatch } from "react-redux";
+import { getUserAsync, getUserUpdateAsync } from "../../store/users";
 
 const MenuHeader = ({ bgActive }) => {
+  const dispatch = useDispatch();
   const [isOpenModal, setOpenModal] = useState(false);
   const [active, setActive] = useState(false);
   const changeState = () => {
@@ -26,24 +29,42 @@ const MenuHeader = ({ bgActive }) => {
       }),
     };
     if (!auth) {
-      const responce = await fetch(
+      const response = await fetch(
         "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBYS5eAvMigqgwYdAL_bG_yu4FLz7_2MbQ",
         requestOptions
       ).then((res) => res.json());
-      localStorage.setItem("idToken", responce.idToken);
-      console.log(responce);
-      if (responce.hasOwnProperty("error")) {
-        NotificationManager.error(responce.error.message, "WRONG!");
-      } else NotificationManager.success("A NEW USER WAS REGISTERED");
+      localStorage.setItem("idToken", response.idToken);
+      console.log(response);
+      const pokemonsStarterpack = await fetch(
+        "https://reactmarathon-api.herokuapp.com/api/pokemons/starter"
+      ).then((res) => res.json());
+      for (const item of pokemonsStarterpack.data) {
+        await fetch(
+          `https://pokemon-game-d7dc9-default-rtdb.europe-west1.firebasedatabase.app/${response.localId}/pokemons.json?auth=${response.idToken}`,
+          {
+            method: "POST",
+            body: JSON.stringify(item),
+          }
+        );
+      }
+      dispatch(getUserUpdateAsync());
+      console.log(pokemonsStarterpack);
+      if (response.hasOwnProperty("error")) {
+        NotificationManager.error(response.error.message, "WRONG!");
+      } else {
+        NotificationManager.success("A NEW USER WAS REGISTERED");
+      }
     } else {
-      const responce = await fetch(
+      const response = await fetch(
         "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBYS5eAvMigqgwYdAL_bG_yu4FLz7_2MbQ",
         requestOptions
       ).then((res) => res.json());
-      if (responce.hasOwnProperty("error")) {
-        NotificationManager.error(responce.error.message, "WRONG!");
+      localStorage.setItem("idToken", response.idToken);
+      dispatch(getUserUpdateAsync());
+      if (response.hasOwnProperty("error")) {
+        NotificationManager.error(response.error.message, "WRONG!");
       } else NotificationManager.success("WELCOME");
-      console.log(responce);
+      console.log(response);
     }
     handlerClickLogin();
   };
